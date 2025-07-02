@@ -1,9 +1,1209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Welcome</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rahul Kuchhadia - Senior AI Partnerships Engineer at New Relic, specializing in Agentic AI, Large Language Models, and Cloud Technologies">
+    <meta name="keywords" content="Rahul Kuchhadia, Agentic AI, Large Language Models, MCP, Python, Go, AI Partnership, New Relic">
+    <title>Rahul Kuchhadia | Senior AI Partnerships Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #10b981;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --text-color: #334155;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+        }
+        
+        .hero-content {
+            flex: 1;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            padding-top: 60px; /* Added padding to move the image down */
+        }
+        
+        .hero-image img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 5px solid #fff;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .hero h1 span {
+            color: var(--primary-color);
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            max-width: 600px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-right: 15px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+        }
+        
+        .section-title p {
+            color: var(--text-color);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .skills {
+            margin-top: 30px;
+        }
+        
+        .skills h3 {
+            margin-bottom: 15px;
+        }
+        
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-tag {
+            background-color: #e0f2fe;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+        
+        .project-content {
+            padding: 20px;
+        }
+        
+        .project-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .project-tag {
+            background-color: #f1f5f9;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .contact-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-icon {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .contact-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .contact-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .contact-card a:hover {
+            color: var(--secondary-color);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: #fff;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h3 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 50px 0;
+            }
+            
+            .hero-content {
+                margin-top: 40px;
+            }
+            
+            .hero p {
+                margin: 0 auto 30px;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .services,
+            .projects {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add animation effects */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 1s ease-in-out;
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Timeline styling */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .timeline:after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--light-color);
+            border: 4px solid var(--primary-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even):after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .timeline-content h3 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .timeline-content h4 {
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .timeline-date {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        /* Education and Certifications */
+        .education-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .education-item, .certification-item {
+            margin-bottom: 25px;
+        }
+        
+        .education-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .education-date {
+            font-size: 14px;
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        
+        .certifications-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .certification-tag {
+            background-color: #e0f2fe;
+            color: var(--primary-color);
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        @media (max-width: 992px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:nth-child(odd):after,
+            .timeline-item:nth-child(even):after {
+                left: 21px;
+            }
+            
+            .education-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Theme switcher */
+        .theme-switch {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .theme-switch:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Dark theme */
+        .dark-theme {
+            --light-color: #121212;
+            --dark-color: #f8fafc;
+            --text-color: #e2e8f0;
+            background-color: #121212;
+        }
+        
+        .dark-theme header,
+        .dark-theme .service-card,
+        .dark-theme .project-card,
+        .dark-theme .contact-card,
+        .dark-theme .timeline-content {
+            background-color: #1e1e1e;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dark-theme .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+        
+        .dark-theme .project-tag,
+        .dark-theme .certification-tag {
+            background-color: #2d2d2d;
+        }
+        
+        .dark-theme .skill-tag {
+            background-color: #2d2d2d;
+            color: var(--secondary-color);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            width: 250px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 200;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+        
+        .mobile-menu a {
+            padding: 15px 20px;
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu a:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 24px;
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu-toggle:hover {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+
+        /* GitHub Activity Section */
+        .github-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .github-contributions {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .github-metrics {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .metric-card {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-width: 150px;
+            transition: var(--transition);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .dark-theme .metric-card {
+            background-color: #1e1e1e;
+        }
+        
+        .dark-theme .metric-label {
+            color: #e2e8f0;
+        }
+        
+        /* GitHub contributions calendar styles - additional */
+        .contributions-calendar {
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .contributions-grid {
+            margin: 0;
+            min-height: 100px;
+        }
+        
+        .month {
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 11px;
+        }
+        
+        .dark-theme .month {
+            color: #e2e8f0;
+        }
+        
+        @media (max-width: 768px) {
+            .github-stats {
+                gap: 20px;
+            }
+            
+            .github-metrics {
+                gap: 15px;
+            }
+            
+            .metric-card {
+                padding: 15px 20px;
+                min-width: 120px;
+            }
+            
+            .contributions-grid {
+                font-size: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Hello from rahul188!</h1>
+    <div class="theme-switch">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Rahul<span>K</span></div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content slide-in-left">
+                <h1>Hello, I'm <span>Rahul Kuchhadia</span></h1>
+                <div class="hero-subtitle">
+                    <p>Senior AI Partnerships Engineer at New Relic | <span class="typing"></span></p>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn">Get In Touch</a>
+                    <a href="#projects" class="btn btn-outline">View Projects</a>
+                </div>
+            </div>
+            <div class="hero-image slide-in-right">
+                <img src="https://ui-avatars.com/api/?name=Rahul+Kuchhadia&size=300&background=0D8ABC&color=fff" alt="Rahul Kuchhadia">
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+                <p>Get to know me better</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <p>
+                        I'm a Senior AI Partnerships Engineer at New Relic with expertise in Agentic AI, Large Language Models (LLM), and Cloud Technologies.
+                        I work with leading cloud and software providers to deliver innovative solutions that enhance the performance, reliability, and security of their applications.
+                    </p>
+                    <p>
+                        Currently focused on secure Agentic AI integrations, driving Agentic AI initiatives, and optimizing cross-cloud observability. 
+                        I'm passionate about scalable architectures, competitor analysis, and collaboration frameworks to deliver high-impact AI solutions.
+                    </p>
+                    <div class="skills" id="skills">
+                        <h3>My Skills</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Agentic AI</span>
+                            <span class="skill-tag">Large Language Models (LLM)</span>
+                            <span class="skill-tag">MCP</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Go</span>
+                            <span class="skill-tag">AWS</span>
+                            <span class="skill-tag">Azure</span>
+                            <span class="skill-tag">CoPilot</span>
+                            <span class="skill-tag">GEMINI</span>
+                            <span class="skill-tag">DevOps</span>
+                            <span class="skill-tag">MLOps</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">FastAPI</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Terraform</span>
+                            <span class="skill-tag">Ansible</span>
+                            <span class="skill-tag">Jenkins</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Kubernetes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>What I Do</h2>
+                <p>Here are some of my specialties</p>
+            </div>
+            <div class="services">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Agentic AI</h3>
+                    <p>Leading secure Agentic AI integrations and driving initiatives for next-generation AI systems that deliver high-impact solutions.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Partnerships</h3>
+                    <p>Working with leading cloud and software providers to deliver innovative AI solutions that enhance performance, reliability, and security.</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>Cloud Architecture</h3>
+                    <p>Optimizing cross-cloud observability and developing scalable architectures across AWS and Azure platforms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #f1f5f9;" id="experience">
+        <div class="container">
+            <div class="section-title">
+                <h2>Work Experience</h2>
+                <p>My professional journey</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Senior AI Partnerships Engineer</h3>
+                        <h4>New Relic</h4>
+                        <p class="timeline-date">August 2024 - Present</p>
+                        <p>Leading secure Agentic AI integrations, driving Agentic AI initiatives, and optimizing cross-cloud observability. Focused on scalable architectures, competitor analysis, and collaboration frameworks to deliver high-impact AI solutions.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Senior Partner Engineer</h3>
+                        <h4>New Relic</h4>
+                        <p class="timeline-date">April 2023 - August 2024</p>
+                        <p>Worked with leading cloud and software providers to deliver innovative solutions that enhance the performance, reliability, and security of their applications.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Software Developer</h3>
+                        <h4>Rackspace Technology</h4>
+                        <p class="timeline-date">February 2022 - April 2023</p>
+                        <p>Worked on a progressive datacenter monitoring tool integrating React and FastAPIs. Utilized React for a dynamic and user-friendly front-end interface. Enhanced datacenter operations, ensuring seamless monitoring and management.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>DevOps Engineer</h3>
+                        <h4>PTC</h4>
+                        <p class="timeline-date">October 2020 - February 2022</p>
+                        <p>Delivered multiple projects including Collector Tool, Self Service Portal, Data Profiling Tool, and R&D Pipeline. Built CI/CD pipelines and utilized Jenkins, Terraform, Ansible, and Python in the DevOps domain.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Innovation Engineer</h3>
+                        <h4>PTC</h4>
+                        <p class="timeline-date">July 2019 - September 2020</p>
+                        <p>Developed Push Button Deployment using Python, Java, RDBMS & Ansible. Built Jarvis CLI Tool in Python for deployment purposes, streamlining more than 75 manual operations into a single CLI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="education">
+        <div class="container">
+            <div class="section-title">
+                <h2>Education & Certifications</h2>
+                <p>My academic background and professional qualifications</p>
+            </div>
+            <div class="education-container">
+                <div class="education-section">
+                    <h3>Education</h3>
+                    <div class="education-item fade-in">
+                        <h4>International Institute of Information Technology Bangalore</h4>
+                        <p>Postgraduate Degree, Machine Learning & Artificial Intelligence</p>
+                        <p class="education-date">December 2024 - December 2025</p>
+                    </div>
+                    <div class="education-item fade-in">
+                        <h4>Sinhgad Institute Of Management And Computer Application</h4>
+                        <p>Master of Computer Applications - MCA, Information Technology</p>
+                        <p class="education-date">2017 - 2019</p>
+                    </div>
+                    <div class="education-item fade-in">
+                        <h4>Atharva Institute Of Information Technology</h4>
+                        <p>Bachelor of Computer Application, Information Technology</p>
+                        <p class="education-date">2014 - 2017</p>
+                    </div>
+                </div>
+                <div class="certifications-section">
+                    <h3>Certifications</h3>
+                    <div class="certifications-container">
+                        <div class="certification-item fade-in">
+                            <span class="certification-tag">PCAP - Python Certification Course</span>
+                        </div>
+                        <div class="certification-item fade-in">
+                            <span class="certification-tag">Learning Linux Command Line</span>
+                        </div>
+                        <div class="certification-item fade-in">
+                            <span class="certification-tag">Microsoft certified C#</span>
+                        </div>
+                        <div class="certification-item fade-in">
+                            <span class="certification-tag">Microsoft Certified: Azure Fundamentals</span>
+                        </div>
+                        <div class="certification-item fade-in">
+                            <span class="certification-tag">Advanced Prompt Engineering for Everyone</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section id="projects" class="section" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>My Projects</h2>
+                <p>Some of my recent work</p>
+            </div>
+            <div class="projects">
+                <div class="project-card fade-in">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400?text=Cricket+Snickometer" alt="Cricket Snickometer">
+                    </div>
+                    <div class="project-content">
+                        <h3>Cricket Snickometer</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Machine Learning</span>
+                        </div>
+                        <p>A Python-based project for cricket snickometer analysis.</p>
+                        <a href="https://github.com/rahul188/cricket-snickometer" class="btn btn-outline" target="_blank">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card fade-in">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400?text=NewRelic+K8s+Operator" alt="NewRelic K8s Operator">
+                    </div>
+                    <div class="project-content">
+                        <h3>NewRelic K8s Operator</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">Go</span>
+                            <span class="project-tag">Kubernetes</span>
+                        </div>
+                        <p>Kubernetes operator for New Relic services.</p>
+                        <a href="https://github.com/rahul188/newrelic-k8s-operator" class="btn btn-outline" target="_blank">View Project</a>
+                    </div>
+                </div>
+                <div class="project-card fade-in">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400?text=NewRelic+Agent" alt="NewRelic Agent">
+                    </div>
+                    <div class="project-content">
+                        <h3>NewRelic Agent</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                        </div>
+                        <p>Custom New Relic agent implementation.</p>
+                        <a href="https://github.com/rahul188/newrelic-agent" class="btn btn-outline" target="_blank">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <section id="contact" class="section" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+                <p>Feel free to contact me</p>
+            </div>
+            <div class="contact-info">
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <a href="mailto:rahulkuchhadia@gmail.com">rahulkuchhadia@gmail.com</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Phone</h3>
+                    <a href="tel:+917021320164">+91 7021320164</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Location</h3>
+                    <p>Hyderabad, Telangana, India</p>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <h3>LinkedIn</h3>
+                    <a href="https://www.linkedin.com/in/rahul-kuchhadia" target="_blank">in/rahul-kuchhadia</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3>GitHub</h3>
+                    <a href="https://github.com/rahul188" target="_blank">github.com/rahul188</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #f1f5f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>GitHub Activity</h2>
+                <p>My contributions and activity</p>
+            </div>
+            <div class="github-stats">
+                <div class="github-contributions fade-in"></div>
+                <div class="github-metrics">
+                    <div class="metric-card fade-in">
+                        <div class="metric-value">38</div>
+                        <div class="metric-label">Repositories</div>
+                    </div>
+                    <div class="metric-card fade-in">
+                        <div class="metric-value">123</div>
+                        <div class="metric-label">Contributions</div>
+                    </div>
+                    <div class="metric-card fade-in">
+                        <div class="metric-value">15</div>
+                        <div class="metric-label">Stars</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Rahul Kuchhadia</h3>
+                    <p>Senior AI Partnerships Engineer at New Relic, specializing in Agentic AI, Large Language Models, and Cloud Technologies.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#education">Education</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Follow Me</h3>
+                    <div class="social-links">
+                        <a href="https://github.com/rahul188" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/rahul-kuchhadia" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://twitter.com/Rahulkuchhadia5" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://auth.geeksforgeeks.org/user/rahul_kuchhadia1" class="social-link" target="_blank"><i class="fas fa-code"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Rahul Kuchhadia. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
