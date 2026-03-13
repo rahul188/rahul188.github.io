@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RAHUL KUCHHADIA · AI Space Chronicles</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* ===================================================
+   RAHUL KUCHHADIA · AI SPACE CHRONICLES
+   Modern 3D Game Portfolio - Fixed WebGL Background
+   Full Astronaut Character · Living Planet
+=================================================== */
+:root {
+  --bg:     #000913;
+  --cyan:   #00ffcc;
+  --purple: #a855f7;
+  --pink:   #f0abfc;
+  --gold:   #ffd700;
+  --green:  #10b981;
+  --txt:    #ffffff;
+  --txt2:   rgba(255,255,255,.68);
+  --txt3:   rgba(255,255,255,.3);
+  --glass:  rgba(5,15,40,.72);
+  --border: rgba(0,255,204,.09);
+  --f1: 'Orbitron', monospace;
+  --f2: 'Space Grotesk', sans-serif;
+  --f3: 'JetBrains Mono', monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--f2);overflow-x:hidden;cursor:none}
+/* CURSOR */
+#crs-dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;position:fixed;top:0;left:0;z-index:99998;pointer-events:none;box-shadow:0 0 12px var(--cyan),0 0 24px var(--cyan);transform:translate(-50%,-50%)}
+#crs-ring{width:34px;height:34px;border:1.5px solid rgba(0,255,204,.55);border-radius:50%;position:fixed;top:0;left:0;z-index:99997;pointer-events:none;transform:translate(-50%,-50%);transition:border-color .2s}
+#crs-ring.hov{border-color:var(--cyan);transform:translate(-50%,-50%) scale(1.55)}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px)}
+/* CANVAS */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 56px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(0,9,19,.6);border-bottom:1px solid var(--border);transition:background .3s}
+.n-logo{font-family:var(--f1);font-size:17px;font-weight:900;color:var(--cyan);text-decoration:none;letter-spacing:3px;text-shadow:0 0 20px rgba(0,255,204,.6)}
+.n-links{display:flex;gap:32px;list-style:none}
+.n-links a{font-family:var(--f3);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);text-decoration:none;transition:color .3s;padding:4px 0;position:relative}
+.n-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--cyan);transition:width .3s;box-shadow:0 0 6px var(--cyan)}
+.n-links a:hover{color:var(--cyan)}.n-links a:hover::after{width:100%}
+.n-xp{display:flex;align-items:center;gap:10px}
+.xp-label{font-family:var(--f3);font-size:9px;color:var(--cyan);letter-spacing:2px}
+.xp-track{width:120px;height:6px;background:rgba(255,255,255,.06);border:1px solid rgba(0,255,204,.15);border-radius:3px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));width:0;transition:width .6s ease;box-shadow:0 0 8px var(--cyan)}
+/* SCROLL WRAP */
+#scroll-wrap{position:relative;z-index:1}
+/* HERO */
+#hero{height:100vh;display:flex;align-items:center;padding:0 56px;position:relative}
+.hero-left{max-width:560px}
+.h-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--f3);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:18px;opacity:0;animation:slidein .8s ease .4s forwards}
+.h-eyebrow .dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan);animation:glow-pulse 2s ease-in-out infinite}
+.h-name{font-family:var(--f1);font-size:clamp(38px,5.5vw,80px);font-weight:900;line-height:1.03;margin-bottom:12px;opacity:0;animation:slidein .8s ease .6s forwards}
+.h-name .line1{display:block;color:#fff}
+.h-name .line2{display:block;background:linear-gradient(130deg,var(--cyan) 0%,var(--purple) 55%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding-right:.1em}
+.h-class{font-family:var(--f3);font-size:12px;letter-spacing:2.5px;color:var(--purple);margin-bottom:14px;opacity:0;animation:slidein .8s ease .8s forwards}
+.h-desc{font-size:15.5px;line-height:1.8;color:var(--txt2);max-width:490px;margin-bottom:32px;opacity:0;animation:slidein .8s ease 1s forwards}
+.h-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;opacity:0;animation:slidein .8s ease 1.2s forwards}
+.pill{padding:5px 14px;background:rgba(0,255,204,.05);border:1px solid rgba(0,255,204,.18);border-radius:100px;font-family:var(--f3);font-size:9px;color:var(--cyan);letter-spacing:1.5px;transition:all .3s}
+.pill:hover{background:rgba(0,255,204,.12);box-shadow:0 0 12px rgba(0,255,204,.2)}
+.h-btns{display:flex;gap:14px;opacity:0;animation:slidein .8s ease 1.4s forwards}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:8px;font-family:var(--f1);font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;text-decoration:none;transition:all .3s;position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.1);opacity:0;transition:opacity .3s}
+.btn:hover::before{opacity:1}
+.btn-p{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;box-shadow:0 0 28px rgba(0,255,204,.35)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(0,255,204,.55)}
+.btn-o{border:1.5px solid rgba(0,255,204,.3);color:var(--cyan);backdrop-filter:blur(10px)}
+.btn-o:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 0 20px rgba(0,255,204,.2)}
+.scroll-hint{position:absolute;bottom:32px;left:56px;display:flex;flex-direction:column;gap:6px;opacity:0;animation:slidein 1s ease 2s forwards}
+.sh-line{width:1px;height:55px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:sh-anim 2s ease-in-out infinite}
+.sh-txt{font-family:var(--f3);font-size:8px;letter-spacing:3px;color:var(--txt3);writing-mode:vertical-rl}
+@keyframes sh-anim{0%,100%{opacity:1;height:55px}50%{opacity:.4;height:30px}}
+/* SECTION BASE */
+section{position:relative;z-index:2;padding:100px 56px}
+.glass-wrap{background:var(--glass);backdrop-filter:blur(28px);border-top:1px solid rgba(0,255,204,.08);border-bottom:1px solid rgba(0,255,204,.06)}
+.s-eyebrow{display:block;font-family:var(--f3);font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;opacity:0;transform:translateY(18px);transition:all .6s}
+.s-eyebrow.vis{opacity:1;transform:translateY(0)}
+.s-title{font-family:var(--f1);font-size:clamp(26px,3.8vw,52px);font-weight:900;margin-bottom:10px;opacity:0;transform:translateY(18px);transition:all .6s .08s}
+.s-title.vis{opacity:1;transform:translateY(0)}
+.s-title .ac{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.s-rule{width:72px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;box-shadow:0 0 12px rgba(0,255,204,.4);margin-bottom:56px;opacity:0;transition:opacity .6s .16s}
+.s-rule.vis{opacity:1}
+.rv{opacity:0;transform:translateY(22px);transition:all .7s}.rv.vis{opacity:1;transform:translateY(0)}
+.rl{opacity:0;transform:translateX(-22px);transition:all .7s}.rl.vis{opacity:1;transform:translateX(0)}
+/* GLASS CARD */
+.gc{background:rgba(0,20,50,.45);border:1px solid rgba(0,255,204,.1);border-radius:14px;backdrop-filter:blur(16px);overflow:hidden;position:relative;transition:all .4s ease}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,204,.35),transparent)}
+.gc:hover{border-color:rgba(0,255,204,.22);box-shadow:0 0 40px rgba(0,255,204,.1);transform:translateY(-4px)}
+/* ABOUT */
+#about{background:transparent}
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;max-width:1200px;margin:0 auto;align-items:center}
+.ab-p{font-size:15px;line-height:1.85;color:var(--txt2);margin-bottom:16px}
+.ab-p strong{color:var(--cyan)}
+.stats-row{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.stat-box{padding:26px 20px;text-align:center;background:rgba(0,20,50,.5);border:1px solid rgba(0,255,204,.1);border-radius:12px;transition:all .35s}
+.stat-box:hover{border-color:var(--cyan);box-shadow:0 0 24px rgba(0,255,204,.15);transform:translateY(-4px)}
+.stat-n{font-family:var(--f1);font-size:38px;font-weight:900;display:block;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.stat-l{font-family:var(--f3);font-size:9px;letter-spacing:2px;color:var(--txt3);text-transform:uppercase}
+/* TIMELINE */
+#experience .timeline{max-width:900px;margin:0 auto;position:relative}
+#experience .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--cyan),var(--purple) 70%,transparent)}
+.tl-dot{position:absolute;left:-9px;top:10px;width:20px;height:20px;background:var(--bg);border:2px solid var(--cyan);border-radius:50%;box-shadow:0 0 16px rgba(0,255,204,.6)}
+.tl-dot::after{content:'';position:absolute;inset:4px;background:var(--cyan);border-radius:50%;animation:glow-pulse 2.5s ease-in-out infinite}
+.tl-item{padding-left:44px;margin-bottom:44px;position:relative}
+.tl-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-family:var(--f3);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.tl-badge.active{background:rgba(0,255,204,.08);border:1px solid rgba(0,255,204,.2);color:var(--cyan)}
+.tl-badge.done{background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.18);color:var(--purple)}
+.tl-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.tl-title{font-family:var(--f1);font-size:16px;font-weight:700;color:#fff}
+.tl-period{font-family:var(--f3);font-size:9px;letter-spacing:2px;color:var(--cyan);background:rgba(0,255,204,.06);padding:4px 12px;border-radius:100px;border:1px solid rgba(0,255,204,.15);white-space:nowrap}
+.tl-co{font-size:13px;font-weight:600;color:var(--purple);margin-bottom:2px}
+.tl-loc{font-family:var(--f3);font-size:9px;color:var(--txt3);letter-spacing:1.5px;margin-bottom:16px}
+.tl-ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.tl-ul li{font-size:13px;line-height:1.65;color:var(--txt2);padding-left:16px;position:relative}
+.tl-ul li::before{content:"▹";position:absolute;left:0;color:var(--cyan);font-size:11px;top:1px}
+.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.ttag{padding:3px 10px;background:rgba(0,255,204,.04);border:1px solid rgba(0,255,204,.1);border-radius:4px;font-family:var(--f3);font-size:9px;color:var(--txt3);transition:all .3s}
+.ttag:hover{color:var(--cyan);border-color:rgba(0,255,204,.3)}
+/* SKILLS */
+#skills{background:transparent}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
+.sk-card{padding:28px}
+.sk-head{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.sk-ico{font-size:22px}
+.sk-cat{font-family:var(--f1);font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan)}
+.sk-chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:5px 12px;border-radius:6px;font-family:var(--f3);font-size:10px;transition:all .3s;cursor:default}
+.chip.c{background:rgba(0,255,204,.05);border:1px solid rgba(0,255,204,.12);color:var(--txt2)}
+.chip.c:hover{background:rgba(0,255,204,.1);border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+.chip.p{background:rgba(168,85,247,.05);border:1px solid rgba(168,85,247,.14);color:var(--txt2)}
+.chip.p:hover{background:rgba(168,85,247,.1);border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
+.chip.g{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.14);color:var(--txt2)}
+.chip.g:hover{background:rgba(255,215,0,.1);border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+/* SKILL BARS */
+#skillbars{background:transparent}
+.sb-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.sb-row{margin-bottom:14px}
+.sb-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.sb-name{font-size:12.5px;color:rgba(255,255,255,.8);font-weight:600}
+.sb-pct{font-family:var(--f3);font-size:9px;color:var(--cyan)}
+.sb-track{height:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.sb-fill{height:100%;border-radius:2px;width:0;transition:width 1.8s cubic-bezier(.34,1.56,.64,1);position:relative}
+.sb-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:rgba(255,255,255,.6);border-radius:2px}
+/* TROPHIES */
+#trophies{background:transparent}
+.tr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1100px;margin:0 auto 48px}
+.tr-card{padding:36px 24px;text-align:center;position:relative;overflow:hidden}
+.tr-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top center,rgba(255,215,0,.05),transparent 70%)}
+.tr-ico{font-size:48px;display:block;margin-bottom:14px;filter:drop-shadow(0 0 18px rgba(255,215,0,.6))}
+.tr-num{font-family:var(--f1);font-size:46px;font-weight:900;display:block;color:var(--gold);text-shadow:0 0 24px rgba(255,215,0,.5);margin-bottom:8px}
+.tr-name{font-family:var(--f1);font-size:11px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:8px;line-height:1.5}
+.tr-desc{font-size:12px;color:var(--txt3);line-height:1.65}
+.ignite-block{max-width:860px;margin:0 auto;padding:44px;text-align:center}
+.ignite-ico{font-size:52px;display:block;margin-bottom:16px;filter:drop-shadow(0 0 22px rgba(255,215,0,.7));animation:floaty 3s ease-in-out infinite}
+.ignite-hl{font-family:var(--f1);font-size:20px;font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,.5);margin-bottom:8px}
+.ignite-sub{font-family:var(--f3);font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:16px;text-transform:uppercase}
+.ignite-p{font-size:14px;color:var(--txt2);line-height:1.8;max-width:560px;margin:0 auto}
+/* EDUCATION */
+#education{background:transparent}
+.edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1100px;margin:0 auto}
+.edu-card{padding:32px 26px}
+.edu-ico{font-size:32px;margin-bottom:14px;display:block}
+.edu-deg{font-family:var(--f1);font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:8px;line-height:1.45}
+.edu-sch{font-size:13px;color:#fff;font-weight:500;margin-bottom:8px;line-height:1.5}
+.edu-yr{font-family:var(--f3);font-size:9px;color:var(--txt3);letter-spacing:2px}
+/* CERTS */
+#certs{background:transparent}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1100px;margin:0 auto}
+.cert-item{padding:20px 22px;display:flex;align-items:center;gap:14px;transition:all .3s}
+.cert-item:hover{transform:translateX(6px)}
+.cert-ico{font-size:26px;width:42px;text-align:center;flex-shrink:0}
+.cert-name{font-size:13px;font-weight:500;color:#fff;line-height:1.4}
+.cert-type{font-family:var(--f3);font-size:8px;color:var(--cyan);letter-spacing:1.5px;margin-top:3px}
+/* CONTACT */
+#contact{background:transparent;text-align:center}
+.ct-title{font-family:var(--f1);font-size:clamp(28px,4.5vw,58px);font-weight:900;margin-bottom:16px}
+.ct-title .ac{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ct-sub{font-size:15px;color:var(--txt2);max-width:460px;margin:0 auto 44px;line-height:1.82}
+.ct-row{display:flex;justify-content:center;flex-wrap:wrap;gap:14px}
+.ct-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:10px;text-decoration:none;font-family:var(--f3);font-size:11px;letter-spacing:.5px;font-weight:600;transition:all .35s}
+.ct-btn:hover{transform:translateY(-5px)}
+.ct-email{background:rgba(0,255,204,.07);border:1px solid rgba(0,255,204,.2);color:var(--cyan)}
+.ct-email:hover{box-shadow:0 8px 32px rgba(0,255,204,.25)}
+.ct-li{background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.2);color:var(--purple)}
+.ct-li:hover{box-shadow:0 8px 32px rgba(168,85,247,.25)}
+.ct-gh{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff}
+.ct-gh:hover{box-shadow:0 8px 24px rgba(255,255,255,.1)}
+.ct-loc{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.18);color:#10b981}
+/* FOOTER */
+footer{position:relative;z-index:2;background:rgba(0,9,19,.95);border-top:1px solid rgba(0,255,204,.07);padding:22px 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.ft{font-family:var(--f3);font-size:10px;color:var(--txt3);letter-spacing:1px}
+/* KEYFRAMES */
+@keyframes slidein{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+/* SPARKS */
+.spark{position:fixed;pointer-events:none;z-index:9999;animation:spark-fall 1.4s ease-out forwards}
+@keyframes spark-fall{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(0.2) rotate(360deg)}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--purple));border-radius:4px}
+@media(max-width:1000px){nav{padding:12px 24px}.n-links{display:none}section{padding:80px 24px}#hero{padding:0 24px}.about-grid{grid-template-columns:1fr}.sk-grid{grid-template-columns:1fr 1fr}.sb-wrap{grid-template-columns:1fr}.tr-grid{grid-template-columns:1fr 1fr}.edu-grid{grid-template-columns:1fr}.scroll-hint{left:24px}footer{flex-direction:column;text-align:center}}
+@media(max-width:600px){.h-btns{flex-direction:column}.tr-grid{grid-template-columns:1fr}.sk-grid{grid-template-columns:1fr}.ct-row{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+<div id="crs-dot"></div>
+<div id="crs-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<nav id="nav">
+  <a href="#hero" class="n-logo">RK</a>
+  <ul class="n-links">
+    <li><a href="#about">Stats</a></li>
+    <li><a href="#experience">Journey</a></li>
+    <li><a href="#skills">Arsenal</a></li>
+    <li><a href="#trophies">Trophies</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="n-xp"><span class="xp-label">XP</span><div class="xp-track"><div class="xp-fill" id="xpfill"></div></div></div>
+</nav>
+
+<div id="scroll-wrap">
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="h-eyebrow"><span class="dot"></span> SENIOR AI PARTNERSHIPS ENGINEER</div>
+    <h1 class="h-name">
+      <span class="line1">RAHUL</span>
+      <span class="line2">KUCHHADIA</span>
+    </h1>
+    <div class="h-class">&#9672; CLASS: AI ARCHITECT &nbsp;&middot;&nbsp; LEVEL MAX &nbsp;&middot;&nbsp; NEW RELIC</div>
+    <p class="h-desc">Architect of MCP servers. Builder of Agentic AI systems. International speaker at Microsoft Ignite USA. Six years of making machines think, clouds scale, and partners win.</p>
+    <div class="h-pills">
+      <span class="pill">MCP MASTER</span>
+      <span class="pill">AGENTIC AI</span>
+      <span class="pill">CLOUD LORD</span>
+      <span class="pill">PYTHON MAX</span>
+      <span class="pill">IGNITE SPEAKER</span>
+    </div>
+    <div class="h-btns">
+      <a href="#experience" class="btn btn-p">&#9672; View Journey</a>
+      <a href="#contact" class="btn btn-o">&#9671; Get In Touch</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="sh-line"></div>
+    <span class="sh-txt">Scroll</span>
+  </div>
+</section>
+
+<section id="about" class="glass-wrap">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Player Profile</span>
+    <h2 class="s-title rv">Who <span class="ac">I Am</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="about-grid">
+      <div class="rv">
+        <p class="ab-p">Dynamic Senior AI Partnerships Engineer at <strong>New Relic</strong> with 6+ years building bridges between cutting-edge AI/ML and strategic partner ecosystems.</p>
+        <p class="ab-p">Architect of New Relic's <strong>MCP (Model Context Protocol) Server</strong> &mdash; the engine that lets AI agents talk to observability in real time. International speaker at <strong>Microsoft Ignite USA</strong>.</p>
+        <p class="ab-p">Deep expertise in Python, Go, Azure, AWS, and Agentic AI &mdash; combined with a partner-first mindset that turns engineering into strategic wins.</p>
+      </div>
+      <div>
+        <div class="stats-row">
+          <div class="stat-box rv" style="transition-delay:.05s"><span class="stat-n" data-target="6" data-suffix="+">0+</span><span class="stat-l">Years Experience</span></div>
+          <div class="stat-box rv" style="transition-delay:.1s"><span class="stat-n" data-target="430" data-suffix="H">0H</span><span class="stat-l">Productivity Gained</span></div>
+          <div class="stat-box rv" style="transition-delay:.15s"><span class="stat-n" data-target="27" data-suffix="%">0%</span><span class="stat-l">Efficiency Boost</span></div>
+          <div class="stat-box rv" style="transition-delay:.2s"><span class="stat-n" data-target="75" data-suffix="+">0+</span><span class="stat-l">Ops Automated</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Quest Log</span>
+    <h2 class="s-title rv">Career <span class="ac">Chronicles</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="timeline">
+
+      <div class="tl-item rl" style="transition-delay:.0s">
+        <div class="tl-dot"></div>
+        <div class="gc"><div style="padding:28px">
+          <span class="tl-badge active">&#9679; Active Quest</span>
+          <div class="tl-hdr"><div class="tl-title">Senior AI Partnerships Engineer</div><span class="tl-period">Aug 2024 &ndash; Present</span></div>
+          <div class="tl-co">New Relic</div><div class="tl-loc">&#128205; Hyderabad, India</div>
+          <ul class="tl-ul">
+            <li>Designed &amp; led New Relic's <strong style="color:var(--cyan)">MCP Server</strong> &mdash; enabling AI agents to query observability data in real time</li>
+            <li>Spoke at <strong style="color:var(--gold)">Microsoft Ignite USA</strong> &mdash; presented cross-cloud AI observability to global enterprise audiences</li>
+            <li>Drove Agentic AI integrations with <strong style="color:var(--cyan)">OpenAI &middot; Google Gemini &middot; GitHub Copilot</strong></li>
+            <li>Led AI roadmap and competitor analysis for AI/ML partnerships &mdash; securing strategic wins across cloud ecosystems</li>
+            <li>Championed secure, scalable architectures aligning engineering roadmaps with partner GTM strategies</li>
+          </ul>
+          <div class="tl-tags"><span class="ttag">MCP</span><span class="ttag">Agentic AI</span><span class="ttag">OpenAI</span><span class="ttag">Gemini</span><span class="ttag">New Relic</span><span class="ttag">Observability</span></div>
+        </div></div>
+      </div>
+
+      <div class="tl-item rl" style="transition-delay:.1s">
+        <div class="tl-dot" style="border-color:var(--purple);box-shadow:0 0 16px rgba(168,85,247,.6)"></div>
+        <div class="gc"><div style="padding:28px">
+          <span class="tl-badge done">&#10003; Completed &middot; +5000 XP</span>
+          <div class="tl-hdr"><div class="tl-title">Senior Partner Engineer</div><span class="tl-period">Apr 2023 &ndash; Aug 2024</span></div>
+          <div class="tl-co">New Relic</div><div class="tl-loc">&#128205; Hyderabad, India</div>
+          <ul class="tl-ul">
+            <li>Deepened cloud partnerships across <strong style="color:var(--purple)">AWS &middot; Azure &middot; GCP</strong> expanding New Relic's observability footprint</li>
+            <li>Technical bridge between partner engineering and New Relic product &mdash; accelerating joint solution delivery</li>
+            <li>Drove technical enablement programs and co-developed integration docs for strategic partners</li>
+          </ul>
+          <div class="tl-tags"><span class="ttag">AWS</span><span class="ttag">Azure</span><span class="ttag">GCP</span><span class="ttag">Cloud</span><span class="ttag">Partnerships</span></div>
+        </div></div>
+      </div>
+
+      <div class="tl-item rl" style="transition-delay:.2s">
+        <div class="tl-dot" style="border-color:#00aaff;box-shadow:0 0 16px rgba(0,170,255,.6)"></div>
+        <div class="gc"><div style="padding:28px">
+          <span class="tl-badge done" style="color:#00aaff;border-color:rgba(0,170,255,.2);background:rgba(0,170,255,.06)">&#10003; Completed &middot; +3000 XP</span>
+          <div class="tl-hdr"><div class="tl-title">Software Developer</div><span class="tl-period">Feb 2022 &ndash; Apr 2023</span></div>
+          <div class="tl-co">Rackspace Technology</div><div class="tl-loc">&#128205; Hyderabad, India</div>
+          <ul class="tl-ul">
+            <li>Built progressive datacenter monitoring tool integrating <strong style="color:#00aaff">React + FastAPI</strong> for real-time operational insights</li>
+            <li>Robust full-stack platform reducing mean time to detect incidents significantly</li>
+          </ul>
+          <div class="tl-tags"><span class="ttag">React</span><span class="ttag">FastAPI</span><span class="ttag">Python</span><span class="ttag">Monitoring</span></div>
+        </div></div>
+      </div>
+
+      <div class="tl-item rl" style="transition-delay:.3s">
+        <div class="tl-dot" style="border-color:#ff9800;box-shadow:0 0 16px rgba(255,152,0,.6)"></div>
+        <div class="gc"><div style="padding:28px">
+          <span class="tl-badge done" style="color:#ff9800;border-color:rgba(255,152,0,.2);background:rgba(255,152,0,.06)">&#10003; Completed &middot; +4000 XP</span>
+          <div class="tl-hdr"><div class="tl-title">DevOps Engineer</div><span class="tl-period">Oct 2020 &ndash; Feb 2022</span></div>
+          <div class="tl-co">PTC</div><div class="tl-loc">&#128205; Pune, India</div>
+          <ul class="tl-ul">
+            <li>Automated Azure VM deployment with Jenkins &middot; Terraform &middot; Ansible &middot; Python &mdash; cut deployment time <strong style="color:#ff9800">27%</strong></li>
+            <li>Built Collector Tool, Self-Service Portal, Data Profiling Tool, R&amp;D Pipeline &mdash; all shipped on time</li>
+            <li>Container-based CI/CD pipeline enabling on-demand Windchill server deployment for QA teams</li>
+          </ul>
+          <div class="tl-tags"><span class="ttag">Jenkins</span><span class="ttag">Terraform</span><span class="ttag">Ansible</span><span class="ttag">Docker</span><span class="ttag">CI/CD</span></div>
+        </div></div>
+      </div>
+
+      <div class="tl-item rl" style="transition-delay:.4s">
+        <div class="tl-dot" style="border-color:var(--pink);box-shadow:0 0 16px rgba(240,171,252,.6)"></div>
+        <div class="gc"><div style="padding:28px">
+          <span class="tl-badge done" style="color:var(--pink);border-color:rgba(240,171,252,.2);background:rgba(240,171,252,.05)">&#10003; Completed &middot; +3500 XP</span>
+          <div class="tl-hdr"><div class="tl-title">Innovation Engineer</div><span class="tl-period">Jul 2019 &ndash; Sep 2020</span></div>
+          <div class="tl-co">PTC</div><div class="tl-loc">&#128205; Pune, India</div>
+          <ul class="tl-ul">
+            <li>Push Button Deployment &mdash; Python/Java/Ansible automation boosting team productivity <strong style="color:var(--pink)">+430 hours per release</strong></li>
+            <li>Jarvis CLI Tool &mdash; unified 75+ manual ops into one CLI, reshaping release efficiency entirely</li>
+          </ul>
+          <div class="tl-tags"><span class="ttag">Python</span><span class="ttag">Java</span><span class="ttag">Ansible</span><span class="ttag">CLI</span><span class="ttag">Automation</span></div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="glass-wrap">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Arsenal</span>
+    <h2 class="s-title rv">Technical <span class="ac">Skills</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="sk-grid">
+      <div class="gc sk-card rv" style="transition-delay:.0s"><div class="sk-head"><span class="sk-ico">&#129302;</span><span class="sk-cat">AI / ML</span></div><div class="sk-chips"><span class="chip c">Agentic AI</span><span class="chip c">MCP Protocol</span><span class="chip c">LLMs</span><span class="chip c">RAG</span><span class="chip c">MLOps</span><span class="chip c">OpenAI</span><span class="chip c">Google Gemini</span><span class="chip c">GitHub Copilot</span></div></div>
+      <div class="gc sk-card rv" style="transition-delay:.06s"><div class="sk-head"><span class="sk-ico">&#9729;&#65039;</span><span class="sk-cat">Cloud &amp; Infra</span></div><div class="sk-chips"><span class="chip p">AWS</span><span class="chip p">Azure</span><span class="chip p">GCP</span><span class="chip p">Terraform</span><span class="chip p">Ansible</span><span class="chip p">Serverless</span><span class="chip p">Azure Functions</span><span class="chip p">Azure DevOps</span></div></div>
+      <div class="gc sk-card rv" style="transition-delay:.12s"><div class="sk-head"><span class="sk-ico">&#128187;</span><span class="sk-cat">Languages</span></div><div class="sk-chips"><span class="chip c">Python</span><span class="chip c">Go</span><span class="chip p">Java</span><span class="chip p">C#</span><span class="chip p">JavaScript</span><span class="chip p">React</span></div></div>
+      <div class="gc sk-card rv" style="transition-delay:.18s"><div class="sk-head"><span class="sk-ico">&#9881;&#65039;</span><span class="sk-cat">Backend &amp; APIs</span></div><div class="sk-chips"><span class="chip c">FastAPI</span><span class="chip c">REST APIs</span><span class="chip g">Docker</span><span class="chip g">Kubernetes</span><span class="chip g">Jenkins</span><span class="chip g">CI/CD</span><span class="chip c">PyTest</span></div></div>
+      <div class="gc sk-card rv" style="transition-delay:.24s"><div class="sk-head"><span class="sk-ico">&#128202;</span><span class="sk-cat">Observability</span></div><div class="sk-chips"><span class="chip c">New Relic</span><span class="chip p">Datadog</span><span class="chip g">APM</span><span class="chip g">Distributed Tracing</span><span class="chip g">Log Management</span></div></div>
+      <div class="gc sk-card rv" style="transition-delay:.30s"><div class="sk-head"><span class="sk-ico">&#129309;</span><span class="sk-cat">Strategy</span></div><div class="sk-chips"><span class="chip c">Partner Engineering</span><span class="chip p">GTM Strategy</span><span class="chip p">AI Roadmap</span><span class="chip g">GitHub</span><span class="chip g">Linux CLI</span><span class="chip c">Technical Strategy</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="skillbars">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Ability Levels</span>
+    <h2 class="s-title rv">Power <span class="ac">Rankings</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="sb-wrap">
+      <div class="rv">
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">Python</span><span class="sb-pct">98%</span></div><div class="sb-track"><div class="sb-fill" data-w="98" style="background:linear-gradient(90deg,var(--cyan),#00aa77)"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">Agentic AI / MCP</span><span class="sb-pct">95%</span></div><div class="sb-track"><div class="sb-fill" data-w="95" style="background:linear-gradient(90deg,var(--purple),var(--pink))"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">Partner Engineering</span><span class="sb-pct">99%</span></div><div class="sb-track"><div class="sb-fill" data-w="99" style="background:linear-gradient(90deg,var(--gold),#ff9800)"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">New Relic / Datadog</span><span class="sb-pct">97%</span></div><div class="sb-track"><div class="sb-fill" data-w="97" style="background:linear-gradient(90deg,var(--cyan),var(--purple))"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">LLMs / RAG / MLOps</span><span class="sb-pct">92%</span></div><div class="sb-track"><div class="sb-fill" data-w="92" style="background:linear-gradient(90deg,#00aaff,#0055ff)"></div></div></div>
+      </div>
+      <div class="rv" style="transition-delay:.12s">
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">AWS / Azure / GCP</span><span class="sb-pct">94%</span></div><div class="sb-track"><div class="sb-fill" data-w="94" style="background:linear-gradient(90deg,#00ccff,#0044bb)"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">Go</span><span class="sb-pct">88%</span></div><div class="sb-track"><div class="sb-fill" data-w="88" style="background:linear-gradient(90deg,var(--cyan),var(--purple))"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">Docker / Kubernetes</span><span class="sb-pct">87%</span></div><div class="sb-track"><div class="sb-fill" data-w="87" style="background:linear-gradient(90deg,#00ccff,#004499)"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">Terraform / Ansible</span><span class="sb-pct">85%</span></div><div class="sb-track"><div class="sb-fill" data-w="85" style="background:linear-gradient(90deg,var(--purple),#6600cc)"></div></div></div>
+        <div class="sb-row"><div class="sb-top"><span class="sb-name">FastAPI / REST APIs</span><span class="sb-pct">91%</span></div><div class="sb-track"><div class="sb-fill" data-w="91" style="background:linear-gradient(90deg,var(--cyan),#00aaaa)"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trophies" class="glass-wrap">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Hall of Fame</span>
+    <h2 class="s-title rv">Key <span class="ac">Achievements</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="tr-grid rv">
+      <div class="gc tr-card"><span class="tr-ico">&#128640;</span><span class="tr-num" data-target="430" data-suffix="H">0H</span><div class="tr-name">The Great Automation</div><div class="tr-desc">Unlocked 430 hours of team productivity per release cycle via Push Button Deployment</div></div>
+      <div class="gc tr-card"><span class="tr-ico">&#9889;</span><span class="tr-num" data-target="27" data-suffix="%">0%</span><div class="tr-name">Efficiency Overlord</div><div class="tr-desc">Improved operational efficiency 27% through infrastructure automation at PTC</div></div>
+      <div class="gc tr-card"><span class="tr-ico">&#129302;</span><span class="tr-num" data-target="75" data-suffix="+">0+</span><div class="tr-name">Jarvis Protocol</div><div class="tr-desc">Consolidated 75+ manual operations into a single CLI. Human error: eliminated.</div></div>
+    </div>
+    <div class="gc ignite-block rv" style="transition-delay:.2s;border-color:rgba(255,215,0,.2)">
+      <span class="ignite-ico">&#128081;</span>
+      <div class="ignite-hl">MICROSOFT IGNITE &middot; USA</div>
+      <div class="ignite-sub">World Stage Unlocked &middot; Legendary Achievement</div>
+      <p class="ignite-p">Represented New Relic at Microsoft Ignite USA &mdash; delivered AI observability strategy and New Relic's Agentic AI vision to global enterprise audiences. A rare achievement held by less than 0.1% of engineers worldwide.</p>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div style="max-width:1200px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Origin Story</span>
+    <h2 class="s-title rv">Education &amp; <span class="ac">Learning</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="edu-grid">
+      <div class="gc edu-card rv" style="transition-delay:.0s"><span class="edu-ico">&#129302;</span><div class="edu-deg">PG Diploma &mdash; Machine Learning &amp; AI</div><div class="edu-sch">IIIT Bangalore &middot; International Institute of IT</div><div class="edu-yr">Dec 2024 &ndash; Dec 2025</div></div>
+      <div class="gc edu-card rv" style="transition-delay:.1s"><span class="edu-ico">&#128187;</span><div class="edu-deg">Master of Computer Applications (MCA)</div><div class="edu-sch">Sinhgad Institute of Management &amp; Computer Application</div><div class="edu-yr">2017 &ndash; 2019</div></div>
+      <div class="gc edu-card rv" style="transition-delay:.2s"><span class="edu-ico">&#127891;</span><div class="edu-deg">Bachelor of Computer Application (BCA)</div><div class="edu-sch">Atharva Institute of Information Technology &middot; Where It All Began</div><div class="edu-yr">2014 &ndash; 2017</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="certs" class="glass-wrap">
+  <div style="max-width:1100px;margin:0 auto">
+    <span class="s-eyebrow rv">&#9672; Inventory</span>
+    <h2 class="s-title rv">Equipped <span class="ac">Certifications</span></h2>
+    <div class="s-rule rv"></div>
+    <div class="cert-grid rv">
+      <div class="gc cert-item"><span class="cert-ico">&#128013;</span><div><div class="cert-name">PCAP &ndash; Python Certification</div><div class="cert-type">RARE &middot; Language Mastery</div></div></div>
+      <div class="gc cert-item"><span class="cert-ico">&#128302;</span><div><div class="cert-name">Fundamentals of MCP Protocol</div><div class="cert-type">LEGENDARY &middot; Protocol Sage</div></div></div>
+      <div class="gc cert-item"><span class="cert-ico">&#9729;&#65039;</span><div><div class="cert-name">Azure Fundamentals AZ-900</div><div class="cert-type">EPIC &middot; Cloud Artisan</div></div></div>
+      <div class="gc cert-item"><span class="cert-ico">&#9889;</span><div><div class="cert-name">Microsoft Certified: C#</div><div class="cert-type">RARE &middot; Language Scroll</div></div></div>
+      <div class="gc cert-item"><span class="cert-ico">&#128039;</span><div><div class="cert-name">Learning Linux Command Line</div><div class="cert-type">COMMON &middot; Terminal Adept</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div style="max-width:900px;margin:0 auto">
+    <h2 class="ct-title rv">Let's <span class="ac">Collaborate</span></h2>
+    <p class="ct-sub rv">Whether you're building AI partnerships, architecting MCP integrations, or exploring Agentic AI &mdash; drop a message and let's make something legendary.</p>
+    <div class="ct-row rv">
+      <a href="mailto:rahulkuchhadia@gmail.com" class="ct-btn ct-email">&#9993; rahulkuchhadia@gmail.com</a>
+      <a href="https://linkedin.com/in/rahulkuchhadia" target="_blank" rel="noopener" class="ct-btn ct-li">&#128279; LinkedIn</a>
+      <a href="https://github.com/rahul188" target="_blank" rel="noopener" class="ct-btn ct-gh">&#128187; GitHub</a>
+      <span class="ct-btn ct-loc">&#128205; Hyderabad, India</span>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <span class="ft">&copy; 2026 Rahul Kuchhadia &middot; Senior AI Partnerships Engineer</span>
+  <span style="font-size:18px;filter:drop-shadow(0 0 10px var(--cyan));animation:glow-pulse 2.5s ease-in-out infinite">&#9670;</span>
+  <span class="ft">AI SPACE CHRONICLES &middot; All Quests Completed</span>
+</footer>
+
+<script>
+/* =====================================================
+   AI SPACE CHRONICLES ENGINE
+   Three.js | 3D Astronaut | Living Planet | Space
+===================================================== */
+// CURSOR
+const dot=document.getElementById('crs-dot');
+const ring=document.getElementById('crs-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function rf(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(rf);})();
+document.querySelectorAll('a,button,.gc,.btn,.ct-btn,.pill').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('hov'));
+});
+
+// SCROLL XP
+window.addEventListener('scroll',()=>{
+  const p=scrollY/(document.body.scrollHeight-innerHeight)*100;
+  document.getElementById('xpfill').style.width=p+'%';
+  document.getElementById('nav').style.background=scrollY>60?'rgba(0,9,19,.95)':'rgba(0,9,19,.6)';
+});
+
+// CLICK SPARKS
+document.addEventListener('click',e=>{
+  const C=['var(--cyan)','var(--purple)','#ffd700','#fff','var(--pink)'];
+  const S=['◆','✦','★','●','▲','⬡'];
+  for(let i=0;i<10;i++){
+    const el=document.createElement('div');
+    el.className='spark';
+    const c=C[Math.floor(Math.random()*C.length)];
+    el.style.cssText=`left:${e.clientX+(Math.random()-.5)*40}px;top:${e.clientY+(Math.random()-.5)*20}px;color:${c};text-shadow:0 0 8px ${c};font-size:${6+Math.random()*12}px;animation-duration:${.8+Math.random()*.8}s;`;
+    el.textContent=S[Math.floor(Math.random()*S.length)];
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1600);
+  }
+});
+
+// =====================================================
+//  THREE.JS 3D SCENE
+// =====================================================
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  const R=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,2));
+  R.setSize(innerWidth,innerHeight);
+  R.toneMapping=THREE.ACESFilmicToneMapping;
+  R.toneMappingExposure=1.3;
+
+  const scene=new THREE.Scene();
+  scene.fog=new THREE.FogExp2(0x000913,.016);
+  const cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,800);
+  cam.position.set(0,2,13);cam.lookAt(0,0,0);
+
+  // STARS
+  (function(){
+    const geo=new THREE.BufferGeometry();
+    const n=4500,pos=new Float32Array(n*3),col=new Float32Array(n*3),sz=new Float32Array(n);
+    for(let i=0;i<n;i++){
+      pos[i*3]=(Math.random()-.5)*320;pos[i*3+1]=(Math.random()-.5)*220;pos[i*3+2]=(Math.random()-.5)*200-20;
+      sz[i]=.02+Math.random()*.1;
+      const r=Math.random();
+      if(r<.45){col[i*3]=0;col[i*3+1]=1;col[i*3+2]=.8;}
+      else if(r<.75){col[i*3]=.65;col[i*3+1]=.33;col[i*3+2]=.97;}
+      else{col[i*3]=1;col[i*3+1]=1;col[i*3+2]=1;}
+    }
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+    geo.setAttribute('size',new THREE.BufferAttribute(sz,1));
+    const stars=new THREE.Points(geo,new THREE.PointsMaterial({vertexColors:true,transparent:true,opacity:.75,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true,size:.07}));
+    scene.add(stars);
+    scene._stars=stars;
+  })();
+
+  // PLANET with full shader
+  const pGeo=new THREE.SphereGeometry(3.6,128,128);
+  const pMat=new THREE.ShaderMaterial({
+    uniforms:{uTime:{value:0}},
+    vertexShader:`
+      varying vec3 vN;varying vec2 vUv;varying vec3 vPos;uniform float uTime;
+      float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      float sn(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),u.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x),u.y);}
+      void main(){vN=normalize(normalMatrix*normal);vUv=uv;vPos=position;
+        float d=sn(uv*5.5+uTime*.05)*.14+sn(uv*14.+uTime*.03)*.06+sn(uv*35.)*.025;
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(position+normal*d,1.);}
+    `,
+    fragmentShader:`
+      varying vec3 vN;varying vec2 vUv;varying vec3 vPos;uniform float uTime;
+      float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      float n(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),u.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x),u.y);}
+      float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.01;a*=.5;}return v;}
+      void main(){
+        vec2 uv=vUv+vec2(uTime*.012,uTime*.003);
+        float fn=fbm(uv*4.),fn2=fbm(uv*10.+3.1);
+        float cont=smoothstep(.44,.60,fn+fn2*.22);
+        float pole=smoothstep(.8,.98,abs(vPos.y)/3.7);
+        float deep=smoothstep(.1,.42,fn);
+        vec3 dOcean=vec3(.01,.08,.22),sOcean=vec3(.02,.18,.38);
+        vec3 land=mix(vec3(.07,.22,.12),vec3(.12,.28,.08),fn2);
+        vec3 desert=vec3(.28,.22,.11),ice=vec3(.75,.9,1.);
+        vec3 col=mix(dOcean,sOcean,deep);
+        col=mix(col,land,cont*.9);col=mix(col,desert,cont*smoothstep(.55,.72,fn)*.7);col=mix(col,ice,pole);
+        float lit=dot(vN,normalize(vec3(.6,.8,.5)));
+        float city=n(uv*55.)*n(uv*110.)*(1.-cont);
+        col=mix(col+vec3(1.,.6,.1)*city*3.,col,smoothstep(-.08,.12,lit));
+        float spec=pow(max(dot(reflect(-normalize(vec3(.6,.8,.5)),vN),normalize(vec3(0,0,1))),0.),28.);
+        col+=vec3(.4,.9,1.)*spec*(1.-cont)*.7;
+        float rim=pow(1.-max(dot(vN,vec3(0,0,1)),0.),2.4);
+        col+=vec3(0.,.72,.9)*rim*.8;
+        col*=.9+sin(uTime*.7)*.04;
+        gl_FragColor=vec4(col,1.);}
+    `
+  });
+  const planet=new THREE.Mesh(pGeo,pMat);
+  planet.position.set(4.5,.5,-2);
+  scene.add(planet);
+
+  // ATMOSPHERE
+  const atm=new THREE.Mesh(new THREE.SphereGeometry(4.05,32,32),new THREE.ShaderMaterial({
+    vertexShader:`varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+    fragmentShader:`varying vec3 vN;void main(){float r=pow(1.-max(dot(vN,vec3(0,0,1)),0.),1.9);gl_FragColor=vec4(0.,.72,.9,r*.45);}`,
+    transparent:true,side:THREE.BackSide,depthWrite:false,blending:THREE.AdditiveBlending
+  }));
+  scene.add(atm);
+
+  // ORBITAL RINGS
+  function makeRing(r,t,c,op,rx,ry,rz){
+    const m=new THREE.Mesh(new THREE.TorusGeometry(r,t,4,200),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:op,blending:THREE.AdditiveBlending,depthWrite:false}));
+    m.rotation.set(rx,ry,rz);scene.add(m);return m;
+  }
+  const rA=makeRing(5.5,.04,0x00ffcc,.3,.42,.1,.2);
+  const rB=makeRing(6.3,.025,0xa855f7,.2,-.5,.35,.6);
+  const rC=makeRing(4.9,.055,0x00aaff,.18,1.1,.1,.3);
+
+  // MOONS
+  const moons=[];
+  [[.85,7.2,0x00ffcc,.7,.2],[.58,10.5,0xa855f7,.45,.5],[.38,13,0xffd700,.32,-.3]].forEach(([r,d,c,sp,inc])=>{
+    const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,20),new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:.25,metalness:.3,roughness:.7}));
+    const piv=new THREE.Object3D();piv.position.copy(planet.position);piv.rotation.z=inc;
+    m.position.set(d,0,0);piv.add(m);scene.add(piv);moons.push({m,piv,sp});
+  });
+
+  // ASTEROID BELT
+  const abGeo=new THREE.BufferGeometry();
+  const abPos=new Float32Array(600*3);
+  for(let i=0;i<600;i++){const a=Math.random()*Math.PI*2,r=14+Math.random()*6;abPos[i*3]=Math.cos(a)*r+4.5;abPos[i*3+1]=(Math.random()-.5)*1.5+.5;abPos[i*3+2]=Math.sin(a)*r-2;}
+  abGeo.setAttribute('position',new THREE.BufferAttribute(abPos,3));
+  const abm=new THREE.Points(abGeo,new THREE.PointsMaterial({color:0x888888,size:.06,transparent:true,opacity:.5}));
+  scene.add(abm);
+
+  // BUILD CHARACTER
+  function buildChar(){
+    const g=new THREE.Group();
+    const S=(c,m=.75,ro=.25)=>new THREE.MeshStandardMaterial({color:c,metalness:m,roughness:ro});
+    const E=(c,i=1.1)=>new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i,metalness:.5,roughness:.15});
+    const suitS=S(0x060f1f);
+    const accentS=S(0x111a2e,.9,.1);
+    const glowC=E(0x00ffcc);
+    const glowP=E(0xa855f7,.85);
+    const visorM=new THREE.MeshStandardMaterial({color:0x002244,emissive:0x003366,emissiveIntensity:.9,roughness:.05,metalness:.1,transparent:true,opacity:.78});
+
+    function M(geo,mat,px,py,pz){
+      const m=new THREE.Mesh(geo,mat instanceof THREE.Material?mat:mat.clone());
+      m.position.set(px,py,pz);return m;
+    }
+    function Mc(geo,mat,px,py,pz,sx,sy,sz){
+      const m=M(geo,mat,px,py,pz);if(sx)m.scale.set(sx,sy||sx,sz||sx);return m;
+    }
+
+    // HEAD GROUP
+    const headG=new THREE.Group();headG.position.y=1.68;
+    headG.add(M(new THREE.SphereGeometry(.28,24,24),suitS,0,0,0));
+    const visor=M(new THREE.SphereGeometry(.22,20,20),visorM,0,0,.12);
+    visor.scale.set(1,.76,.52);headG.add(visor);
+    const hRing=M(new THREE.TorusGeometry(.28,.018,8,48),glowC,0,0,0);headG.add(hRing);
+    const ant=M(new THREE.CylinderGeometry(.011,.011,.2,6),glowC,.14,.32,.06);headG.add(ant);
+    headG.add(M(new THREE.SphereGeometry(.025,8,8),glowC,.14,.44,.06));
+    g.add(headG);
+
+    // NECK
+    g.add(M(new THREE.CylinderGeometry(.08,.1,.1,12),suitS,0,1.44,0));
+
+    // TORSO GROUP
+    const torsoG=new THREE.Group();torsoG.position.set(0,1.05,0);
+    torsoG.add(M(new THREE.BoxGeometry(.52,.62,.3),suitS,0,0,0));
+    // stripe lines
+    torsoG.add(M(new THREE.BoxGeometry(.48,.02,.32),glowC,0,.28,0));
+    torsoG.add(M(new THREE.BoxGeometry(.48,.02,.32),glowC,0,-.28,0));
+    // arc reactor
+    const core=M(new THREE.CylinderGeometry(.075,.075,.04,16),glowC.clone(),0,.1,.16);
+    core.rotation.x=Math.PI/2;torsoG.add(core);
+    // hex panel
+    torsoG.add(Mc(new THREE.CylinderGeometry(.12,.12,.025,6),accentS,0,-.08,.16));
+    g.add(torsoG);
+
+    // JETPACK
+    const jpG=new THREE.Group();jpG.position.set(0,1.05,-.22);
+    jpG.add(M(new THREE.BoxGeometry(.3,.38,.14),accentS,0,0,0));
+    jpG.add(M(new THREE.BoxGeometry(.28,.015,.15),glowC,0,.19,0));
+    const thL=M(new THREE.CylinderGeometry(.038,.05,.12,10),glowC.clone(),-.09,-.23,0);
+    const thR=M(new THREE.CylinderGeometry(.038,.05,.12,10),glowC.clone(),.09,-.23,0);
+    jpG.add(thL,thR);g.add(jpG);
+
+    // BELT
+    g.add(M(new THREE.BoxGeometry(.56,.08,.32),glowP.clone(),0,.72,0));
+    g.add(M(new THREE.BoxGeometry(.18,.06,.04),glowC.clone(),0,.72,.17));
+
+    // SHOULDER PADS
+    function addShoulder(sx){
+      const sg=new THREE.Group();sg.position.set(sx*-.38,1.32,0);
+      sg.add(Mc(new THREE.SphereGeometry(.15,14,14),accentS,0,0,0,1,.85,.75));
+      const sr=M(new THREE.TorusGeometry(.12,.012,6,30),glowC.clone(),0,0,0);sr.rotation.z=Math.PI/2;sg.add(sr);
+      g.add(sg);
+    }
+    addShoulder(1);addShoulder(-1);
+
+    // ARMS helper
+    function makeArm(sx){
+      const uG=new THREE.Group();uG.position.set(sx*.38,1.24,0);
+      uG.add(M(new THREE.CylinderGeometry(.072,.065,.42,12),suitS,0,-.21,0));
+      uG.add(Mc(new THREE.SphereGeometry(.07,10,10),accentS,0,-.44,0));
+      const lG=new THREE.Group();lG.position.y=-.46;
+      lG.add(M(new THREE.CylinderGeometry(.066,.058,.38,12),suitS,0,-.19,0));
+      const wr=M(new THREE.TorusGeometry(.065,.013,8,28),glowC.clone(),0,-.39,0);wr.rotation.x=Math.PI/2;lG.add(wr);
+      lG.add(Mc(new THREE.SphereGeometry(.068,12,12),suitS,0,-.48,0));
+      uG.add(lG);g.add(uG);
+      return{uG,lG};
+    }
+    const armL=makeArm(-1),armR=makeArm(1);
+
+    // LEGS helper
+    function makeLeg(sx){
+      const uG=new THREE.Group();uG.position.set(sx*.16,.68,0);
+      uG.add(M(new THREE.CylinderGeometry(.105,.095,.44,12),suitS,0,-.22,0));
+      uG.add(Mc(new THREE.SphereGeometry(.09,10,10),accentS,0,-.46,0));
+      const lG=new THREE.Group();lG.position.y=-.47;
+      lG.add(M(new THREE.CylinderGeometry(.092,.078,.42,12),suitS,0,-.21,0));
+      lG.add(M(new THREE.BoxGeometry(.2,.14,.32),suitS,.015,-.51,.04));
+      const bs=M(new THREE.BoxGeometry(.21,.025,.33),glowC.clone(),.015,-.59,.04);lG.add(bs);
+      uG.add(lG);g.add(uG);
+      return{uG,lG};
+    }
+    const legL=makeLeg(-1),legR=makeLeg(1);
+
+    // Character point light
+    const cL=new THREE.PointLight(0x00ffcc,2.2,5.5);cL.position.set(0,.8,.5);g.add(cL);
+
+    return{g,headG,torsoG,core,
+      uAL:armL.uG,lAL:armL.lG,uAR:armR.uG,lAR:armR.lG,
+      uLL:legL.uG,lLL:legL.lG,uLR:legR.uG,lLR:legR.lG,cL};
+  }
+
+  const char=buildChar();
+  const BASE_Y=-1.6;
+  char.g.position.set(-4.5,BASE_Y,2.5);
+  scene.add(char.g);
+
+  // HOLOGRAPHIC NAME PLATES
+  function makeHolo(txt,fs,w,h){
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    const x=c.getContext('2d');x.font=`bold ${fs}px Orbitron,monospace`;
+    x.fillStyle='#00ffcc';x.shadowColor='#00ffcc';x.shadowBlur=16;
+    x.textAlign='center';x.textBaseline='middle';x.fillText(txt,w/2,h/2);
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+    return sp;
+  }
+  const holoN=makeHolo('RAHUL KUCHHADIA',22,300,52);holoN.scale.set(3.2,.56,1);scene.add(holoN);
+  const holoT=makeHolo('AI ARCHITECT  ·  LVL MAX',13,300,38);holoT.scale.set(2.5,.42,1);scene.add(holoT);
+
+  // GROUND GRID
+  const gMat=new THREE.ShaderMaterial({
+    uniforms:{uTime:{value:0}},
+    vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+    fragmentShader:`varying vec2 vUv;uniform float uTime;
+      void main(){
+        float gx=abs(fract(vUv.x*56.)-.5)*2.;float gz=abs(fract(vUv.y*20.)-.5)*2.;
+        float grid=smoothstep(.9,1.,max(gx,gz));
+        float fade=1.-smoothstep(.1,.9,vUv.y);
+        float pulse=.6+sin(uTime*1.5)*0.2;
+        gl_FragColor=vec4(0.,.55,.82,grid*fade*pulse*.6);}`,
+    transparent:true,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending
+  });
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(28,10,56,20),gMat);
+  ground.rotation.x=-Math.PI/2;ground.position.set(-1,-1.58,0);scene.add(ground);
+
+  // THRUSTER PARTICLES
+  const THR_N=120;
+  const thrGeo=new THREE.BufferGeometry();
+  const thrPos=new Float32Array(THR_N*3);
+  thrGeo.setAttribute('position',new THREE.BufferAttribute(thrPos,3));
+  const thrMesh=new THREE.Points(thrGeo,new THREE.PointsMaterial({color:0x00ffcc,size:.055,transparent:true,opacity:.75,blending:THREE.AdditiveBlending,depthWrite:false}));
+  scene.add(thrMesh);
+  const thrP=Array.from({length:THR_N},()=>({x:0,y:-999,z:0,vx:0,vy:0,vz:0,life:0}));
+
+  // LIGHTS
+  scene.add(new THREE.AmbientLight(0x0a1a2e,1.4));
+  const sun=new THREE.DirectionalLight(0xffffff,2.4);sun.position.set(8,12,10);scene.add(sun);
+  const cL2=new THREE.PointLight(0x00ffcc,3,22);cL2.position.set(-6,4,8);scene.add(cL2);
+  const pL=new THREE.PointLight(0xa855f7,2.2,20);pL.position.set(6,-4,6);scene.add(pL);
+
+  // RESIZE
+  window.addEventListener('resize',()=>{
+    cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);
+  });
+
+  // MOUSE REACTIVE CAM
+  let tMX=0,tMY=0,cMX=0,cMY=0;
+  document.addEventListener('mousemove',e=>{tMX=(e.clientX/innerWidth-.5)*.6;tMY=(e.clientY/innerHeight-.5)*.4;});
+
+  // CHAR STATE
+  let cX=-4.5,cDir=1,cSpd=1.9;
+  const CX_MIN=-5.8,CX_MAX=5.2;
+
+  // ANIMATE
+  let T=0;
+  const CLK={t:performance.now()};
+  (function loop(){
+    requestAnimationFrame(loop);
+    const now=performance.now();
+    const dt=Math.min((now-CLK.t)/1000,.033);CLK.t=now;T+=dt;
+
+    // Planet
+    pMat.uniforms.uTime.value=T;
+    planet.rotation.y=T*.12;planet.rotation.x=Math.sin(T*.08)*.04;
+    planet.position.y=.5+Math.sin(T*.22)*.15;
+    rA.position.copy(planet.position);rA.rotation.z=T*.18;
+    rB.position.copy(planet.position);rB.rotation.z=-T*.14;
+    rC.position.copy(planet.position);rC.rotation.z=T*.26;
+    moons.forEach(({m,piv,sp})=>{piv.rotation.y+=sp*dt;piv.position.copy(planet.position);m.rotation.y+=dt*.4;});
+    abm.rotation.y=T*.04;
+
+    // Stars
+    if(scene._stars){scene._stars.rotation.y=T*.006;scene._stars.rotation.x=Math.sin(T*.04)*.008;}
+
+    // Ground
+    gMat.uniforms.uTime.value=T;
+
+    // Lights animate
+    cL2.position.x=Math.sin(T*.35)*6-3;cL2.position.z=Math.cos(T*.28)*5+6;
+    pL.position.x=Math.cos(T*.4)*5+4;pL.position.y=Math.sin(T*.5)*3-2;
+
+    // Camera mouse parallax
+    cMX+=(tMX-cMX)*.05;cMY+=(tMY-cMY)*.05;
+    cam.position.x=cMX*2;cam.position.y=2+cMY*1.2;cam.lookAt(cMX*.5,cMY*.3,0);
+
+    // Character movement
+    cX+=cDir*cSpd*dt;
+    if(cX>CX_MAX)cDir=-1;
+    if(cX<CX_MIN)cDir=1;
+    char.g.position.x=cX;
+    char.g.rotation.y=cDir>0?0:Math.PI;
+
+    // Walk animation
+    const ws=T*4.8;
+    const bob=Math.abs(Math.sin(ws))*.055;
+    char.g.position.y=BASE_Y+bob;
+    char.g.rotation.z=Math.sin(ws*2)*.023;
+    // Arms
+    char.uAL.rotation.x=Math.sin(ws)*.72;
+    char.uAR.rotation.x=-Math.sin(ws)*.72;
+    char.lAL.rotation.x=Math.max(0,Math.sin(ws)*.38);
+    char.lAR.rotation.x=Math.max(0,-Math.sin(ws)*.38);
+    // Legs
+    char.uLL.rotation.x=-Math.sin(ws)*.85;
+    char.uLR.rotation.x=Math.sin(ws)*.85;
+    char.lLL.rotation.x=Math.max(0,Math.sin(ws+.28)*.82);
+    char.lLR.rotation.x=Math.max(0,-Math.sin(ws+.28)*.82);
+    // Torso
+    char.torsoG.rotation.y=Math.sin(ws*2)*.048;
+    char.headG.rotation.x=-.07+Math.sin(ws*2)*.02;
+    // Core pulse
+    char.core.material.emissiveIntensity=.8+Math.sin(T*4.2)*.42;
+
+    // Thrusters
+    for(let i=0;i<4;i++){
+      const p=thrP.find(x=>x.life<=0)||thrP[Math.floor(Math.random()*THR_N)];
+      const wx=char.g.position.x,wy=char.g.position.y,wz=char.g.position.z;
+      p.x=wx+(Math.random()-.5)*.18;p.y=wy+.52+(Math.random()-.5)*.09;p.z=wz-.24+(Math.random()-.5)*.1;
+      p.vx=(Math.random()-.5)*.06;p.vy=-(0.04+Math.random()*.09);p.vz=-cDir*.14;p.life=.35+Math.random()*.45;
+    }
+    const pa=thrGeo.attributes.position.array;
+    thrP.forEach((p,i)=>{
+      p.life-=dt;if(p.life>0){p.x+=p.vx;p.y+=p.vy;p.z+=p.vz;}
+      pa[i*3]=p.life>0?p.x:0;pa[i*3+1]=p.life>0?p.y:-999;pa[i*3+2]=p.life>0?p.z:0;
+    });
+    thrGeo.attributes.position.needsUpdate=true;
+
+    // Holo nameplate follows char
+    const nx=char.g.position.x,ny=BASE_Y+bob;
+    holoN.position.set(nx,ny+2.12,char.g.position.z);
+    holoT.position.set(nx,ny+1.72,char.g.position.z);
+    holoN.material.opacity=.75+Math.sin(T*8.5)*.15;
+    holoT.material.opacity=.55+Math.sin(T*6)*.15;
+
+    R.render(scene,cam);
+  })();
+})();
+
+// SCROLL REVEAL
+const sro=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('vis');});},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv,.rl,.s-eyebrow,.s-title,.s-rule').forEach(el=>sro.observe(el));
+
+// SKILL BAR FILL
+const sbO=new IntersectionObserver(e=>{
+  e.forEach(en=>{if(!en.isIntersecting)return;
+    en.target.querySelectorAll('.sb-fill').forEach(f=>{setTimeout(()=>{f.style.width=(f.dataset.w||0)+'%';},250);});
+    sbO.unobserve(en.target);});
+},{threshold:.2});
+document.querySelectorAll('#skillbars .sb-wrap>div').forEach(el=>sbO.observe(el));
+
+// COUNTER
+const cobs=new IntersectionObserver(e=>{
+  e.forEach(en=>{if(!en.isIntersecting)return;
+    const el=en.target,tgt=+el.dataset.target,sfx=el.dataset.suffix||'';
+    const t0=performance.now();
+    (function tick(n){const p=Math.min((n-t0)/2000,1),v=Math.floor((1-Math.pow(1-p,3))*tgt);
+      el.textContent=v+sfx;if(p<1)requestAnimationFrame(tick);})(t0);
+    cobs.unobserve(el);});
+},{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>cobs.observe(el));
+</script>
+</body>
+</html>
